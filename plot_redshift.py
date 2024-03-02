@@ -35,7 +35,6 @@ def get_galaxy_data(ra, dec, radius=0.1, max_galaxies=100):
                               radius=coords.Angle(radius, unit='deg'),
                               spectro=True,
                               photoobj_fields=['ra', 'dec', 'z', 'petroMag_r'])
-    # query = SDSS.query_region(sky_coord, radius=radius, spectro=True, photoobj_fields=['ra', 'dec', 'z', 'petroMag_r'])
 
     if query is None:
         return np.array([]), np.array([])
