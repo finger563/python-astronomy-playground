@@ -31,7 +31,10 @@ def get_galaxy_data(ra, dec, radius=0.1, max_galaxies=100):
     wavelength range.
     """
     sky_coord = coords.SkyCoord(ra, dec, unit="deg")
-    query = SDSS.query_region(sky_coord, radius=coords.Angle(radius, unit='deg'), spectro=True, photoobj_fields=['ra', 'dec', 'z', 'petroMag_r'])
+    query = SDSS.query_region(sky_coord,
+                              radius=coords.Angle(radius, unit='deg'),
+                              spectro=True,
+                              photoobj_fields=['ra', 'dec', 'z', 'petroMag_r'])
     # query = SDSS.query_region(sky_coord, radius=radius, spectro=True, photoobj_fields=['ra', 'dec', 'z', 'petroMag_r'])
 
     if query is None:
@@ -58,27 +61,19 @@ def plot_redshift_magnitude(redshifts, magnitudes):
     plt.gca().invert_yaxis()  # Magnitudes are brighter for lower values
     plt.show()
 
-def plot_redshift_magnitude_speed(redshifts, magnitudes, speeds):
+def plot_speed_magnitude(speeds, magnitudes):
     """
-    Plot a scatter plot of redshift vs. magnitude and redshift vs. speed for a set of galaxies.
+    Plot a scatter plot of speed vs. magnitude for a set of galaxies.
 
     Parameters:
-    - redshifts: Array of redshifts for the galaxies.
-    - magnitudes: Array of r-band magnitudes for the galaxies.
     - speeds: Array of relative speeds for the galaxies (in km/s).
+    - magnitudes: Array of r-band magnitudes for the galaxies.
     """
-    fig, axs = plt.subplots(2, 1, figsize=(8, 12))
-
-    axs[0].scatter(redshifts, magnitudes, alpha=0.5)
-    axs[0].set_xlabel('Redshift')
-    axs[0].set_ylabel('r-band Magnitude')
-    axs[0].set_title('Redshift vs. Magnitude')
-    axs[0].invert_yaxis()  # Magnitudes are brighter for lower values
-
-    axs[1].scatter(redshifts, speeds, alpha=0.5, color='r')
-    axs[1].set_xlabel('Redshift')
-    axs[1].set_ylabel('Relative Speed (km/s)')
-    axs[1].set_title('Redshift vs. Relative Speed')
+    plt.figure(figsize=(8, 6))
+    plt.scatter(speeds, magnitudes, alpha=0.5)
+    plt.xlabel('Speed (km/s)')
+    plt.ylabel('r-band Magnitude')
+    plt.title('Speed vs. Magnitude')
 
     plt.tight_layout()
     plt.show()
@@ -88,7 +83,7 @@ def main():
     radius = 1  # Search radius (in degrees)
     redshifts, magnitudes, speeds = get_galaxy_data(ra, dec, radius)
     if len(redshifts) > 0:
-        plot_redshift_magnitude_speed(redshifts, magnitudes, speeds)
+        plot_speed_magnitude(speeds, magnitudes)
     else:
         print("No galaxies found in the specified region.")
 
